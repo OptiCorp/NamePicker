@@ -1,10 +1,11 @@
+
 body,
 :root,
 #root,
 html {
     margin: 0;
     width: 100%;
-    max-width: 1280px;
+
     font-family: 'Archivo', sans-serif;
     font-size: 1rem;
     background-color: rgb(188, 188, 188);
