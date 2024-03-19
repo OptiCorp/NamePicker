@@ -1,43 +1,18 @@
 import { Container } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ConfettiExplosion from 'react-confetti-explosion';
-import styled from 'styled-components';
+import { useLocalStorage } from 'usehooks-ts';
 import { MainButton } from '../Button';
 import { names as allNames } from './names';
+import { StyledLi, StyledList, StyledWinnerList } from './styles';
 ('./nameList');
-const StyledList = styled.ul`
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-    background-color: wheat;
-    max-width: 500px;
-    list-style: none;
-    text-decoration: none;
-    padding: 2rem;
-
-    margin: 10px;
-`;
-const StyledWinnerList = styled.ul`
-    display: grid;
-    grid-template-columns: 150px 150px;
-    gap: 20px;
-    background-color: #29f8ff;
-    height: 50px;
-    list-style: none;
-    align-items: center;
-    text-decoration: none;
-    padding: 2rem;
-    margin: 10px;
-`;
-
-const StyledLi = styled.li`
-    margin: 0 auto;
-`;
 
 export const NamePicker = () => {
     const [names, setNames] = useState(allNames);
     const [winners, setWinners] = useState<string[]>([]);
     const [active, setActive] = useState(false);
+    const [chosenNames, setchosenNames] = useLocalStorage<string[]>('chosen_names', []);
+
     let randomName: string;
     const [isExploding, setIsExploding] = useState(false);
     const getRandomname = () => {
@@ -59,11 +34,21 @@ export const NamePicker = () => {
         }, 2000);
     };
 
+    const handleReset = () => {
+        setNames(allNames);
+        setchosenNames([]);
+        setWinners([]);
+        setActive(false);
+    };
+    useEffect(() => {
+        setchosenNames(winners);
+    }, [winners, setchosenNames]);
+
     return (
         <>
             {isExploding && <ConfettiExplosion duration={2000} width={2000} height={2000} />}
             <Container
-                maxWidth="sm"
+                maxWidth="xs"
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -83,13 +68,13 @@ export const NamePicker = () => {
                         </StyledLi>
                     ))}
                 </StyledWinnerList>
-                {winners.length < 2 && (
-                    <MainButton
-                        handleGetRandomName={handleGetRandomName}
-                        active={active}
-                        setActive={setActive}
-                    />
-                )}
+
+                <MainButton
+                    handleGetRandomName={handleGetRandomName}
+                    handleReset={handleReset}
+                    active={active}
+                    winners={winners}
+                />
             </Container>
         </>
     );
