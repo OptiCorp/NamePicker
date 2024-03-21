@@ -1,19 +1,26 @@
 import { Container } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ConfettiExplosion from 'react-confetti-explosion';
-import { useLocalStorage } from 'usehooks-ts';
+import { useDeleteDoc } from '../../handles/useDeleteDoc';
+import { useNameData } from '../../handles/useNameData';
 import { MainButton } from '../Button';
-import { names as allNames } from './names';
 import { StyledLi, StyledList, StyledWinnerList } from './styles';
 ('./nameList');
 
 export const NamePicker = () => {
-    const [names, setNames] = useState(allNames);
+    const { data } = useNameData();
+    const [names, setNames] = useState<string[]>(data);
     const [winners, setWinners] = useState<string[]>([]);
     const [active, setActive] = useState(false);
-    const [chosenNames, setchosenNames] = useLocalStorage<string[]>('chosen_names', []);
-
     const [isExploding, setIsExploding] = useState(false);
+    const { removeName } = useDeleteDoc();
+
+    useEffect(() => {
+        if (data) {
+            setNames(data);
+        }
+    }, [data]);
+
     const getRandomname = () => {
         return names[Math.floor(Math.random() * names.length)];
     };
@@ -32,16 +39,20 @@ export const NamePicker = () => {
             }
         }, 2000);
     };
+    ///
 
     const handleReset = () => {
-        setNames(allNames);
-        setchosenNames([]);
+        setNames(data);
         setWinners([]);
         setActive(false);
     };
-    useEffect(() => {
-        setchosenNames(winners);
-    }, [winners, setchosenNames]);
+
+    const saveData = () => {
+        winners.forEach((winner) => {
+            removeName(winner);
+        });
+        setActive(false);
+    };
 
     return (
         <>
@@ -70,6 +81,7 @@ export const NamePicker = () => {
 
                 <MainButton
                     handleGetRandomName={handleGetRandomName}
+                    saveData={saveData}
                     handleReset={handleReset}
                     active={active}
                     winners={winners}
