@@ -1,7 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-import { collection } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,16 +19,5 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const db = firebaseApp.firestore();
 const auth = firebase.auth();
-
-const nameRef = collection(db, 'names');
-
-// getDocs(nameRef).then((snapshot) => {
-//     const names: string[] = [];
-//     snapshot.docs.forEach((doc) => {
-//         names.push({ ...doc.data(), id: doc.id });
-//     });
-//     console.log(names);
-
-// });
 
 export { auth, db };

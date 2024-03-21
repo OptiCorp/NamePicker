@@ -1,6 +1,7 @@
 import { Container } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ConfettiExplosion from 'react-confetti-explosion';
+import { useDeleteDoc } from '../../handles/useDeleteDoc';
 import { useNameData } from '../../handles/useNameData';
 import { MainButton } from '../Button';
 import { StyledLi, StyledList, StyledWinnerList } from './styles';
@@ -12,6 +13,7 @@ export const NamePicker = () => {
     const [winners, setWinners] = useState<string[]>([]);
     const [active, setActive] = useState(false);
     const [isExploding, setIsExploding] = useState(false);
+    const { removeName } = useDeleteDoc();
 
     useEffect(() => {
         if (data) {
@@ -45,6 +47,13 @@ export const NamePicker = () => {
         setActive(false);
     };
 
+    const saveData = () => {
+        winners.forEach((winner) => {
+            removeName(winner);
+        });
+        setActive(false);
+    };
+
     return (
         <>
             {isExploding && <ConfettiExplosion duration={2000} width={2000} height={2000} />}
@@ -58,7 +67,7 @@ export const NamePicker = () => {
                 }}
             >
                 <StyledList>
-                    {data.map((name, index) => (
+                    {names.map((name, index) => (
                         <li key={index}>{name}</li>
                     ))}
                 </StyledList>
@@ -72,6 +81,7 @@ export const NamePicker = () => {
 
                 <MainButton
                     handleGetRandomName={handleGetRandomName}
+                    saveData={saveData}
                     handleReset={handleReset}
                     active={active}
                     winners={winners}
