@@ -14,13 +14,13 @@ export const useNameData = () => {
 
             querySnapshot.forEach((doc) => {
                 console.log(doc.id, ' => ', doc.data());
-                const nameList = doc.data().nameList; // Access the nameList array from the document
-                setData(nameList); // Update the state with the nameList array
+                const nameList = doc.data().nameList;
+                setData(nameList);
             });
         };
 
         fetchData();
     }, []);
 
-    return data;
+    return { data };
 };

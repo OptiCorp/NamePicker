@@ -1,19 +1,24 @@
 import { Container } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ConfettiExplosion from 'react-confetti-explosion';
-import { useLocalStorage } from 'usehooks-ts';
+import { useNameData } from '../../handles/useNameData';
 import { MainButton } from '../Button';
-import { names as allNames } from './names';
 import { StyledLi, StyledList, StyledWinnerList } from './styles';
 ('./nameList');
 
 export const NamePicker = () => {
-    const [names, setNames] = useState(allNames);
+    const { data } = useNameData();
+    const [names, setNames] = useState<string[]>(data);
     const [winners, setWinners] = useState<string[]>([]);
     const [active, setActive] = useState(false);
-    const [chosenNames, setchosenNames] = useLocalStorage<string[]>('chosen_names', []);
-
     const [isExploding, setIsExploding] = useState(false);
+
+    useEffect(() => {
+        if (data) {
+            setNames(data);
+        }
+    }, [data]);
+
     const getRandomname = () => {
         return names[Math.floor(Math.random() * names.length)];
     };
@@ -32,16 +37,13 @@ export const NamePicker = () => {
             }
         }, 2000);
     };
+    ///
 
     const handleReset = () => {
-        setNames(allNames);
-        setchosenNames([]);
+        setNames(data);
         setWinners([]);
         setActive(false);
     };
-    useEffect(() => {
-        setchosenNames(winners);
-    }, [winners, setchosenNames]);
 
     return (
         <>
@@ -56,7 +58,7 @@ export const NamePicker = () => {
                 }}
             >
                 <StyledList>
-                    {names.map((name, index) => (
+                    {data.map((name, index) => (
                         <li key={index}>{name}</li>
                     ))}
                 </StyledList>

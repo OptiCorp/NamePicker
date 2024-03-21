@@ -1,5 +1,4 @@
 import { Box, Button } from '@mui/material';
-import { useLocalStorage } from 'usehooks-ts';
 
 type Props = {
     handleGetRandomName: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -8,11 +7,9 @@ type Props = {
     handleReset: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 export const MainButton = ({ handleGetRandomName, active, winners, handleReset }: Props) => {
-    const [chosenNames, setchosenNames] = useLocalStorage<string[]>('chosen_names', []);
-
     return (
         <>
-            {chosenNames.length >= 2 ? (
+            {winners.length >= 2 ? (
                 <Box display="flex" alignItems="center" flexDirection="row" gap={5}>
                     <Button
                         variant="contained"
