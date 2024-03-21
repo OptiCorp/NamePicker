@@ -13,7 +13,6 @@ export const NamePicker = () => {
     const [active, setActive] = useState(false);
     const [chosenNames, setchosenNames] = useLocalStorage<string[]>('chosen_names', []);
 
-    let randomName: string;
     const [isExploding, setIsExploding] = useState(false);
     const getRandomname = () => {
         return names[Math.floor(Math.random() * names.length)];
