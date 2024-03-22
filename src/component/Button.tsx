@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 
 type Props = {
     handleGetRandomName: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -19,17 +19,8 @@ export const MainButton = ({
     return (
         <>
             {winners.length >= 2 ? (
-                <Box display="flex" alignItems="center" flexDirection="row" gap={5}>
-                    <Button
-                        variant="contained"
-                        onClick={handleReset}
-                        sx={{
-                            backgroundColor: 'yellow',
-                            color: 'black',
-                            width: '100%',
-                            ':hover': { backgroundColor: 'red' },
-                        }}
-                    >
+                <>
+                    <Button variant="contained" onClick={handleReset}>
                         Another time
                     </Button>
                     <Button
@@ -39,7 +30,7 @@ export const MainButton = ({
                     >
                         save
                     </Button>
-                </Box>
+                </>
             ) : (
                 <Button variant="contained" onClick={handleGetRandomName} disabled={active}>
                     Click me
