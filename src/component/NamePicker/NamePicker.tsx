@@ -80,7 +80,7 @@ export const NamePicker = () => {
                     </Typography>
 
                     <StyledList>
-                        {names.map((name, index) => (
+                        {names.map((name) => (
                             <Chip label={name} />
                         ))}
                     </StyledList>
@@ -103,7 +103,7 @@ export const NamePicker = () => {
                         {' '}
                         Winners!
                     </Typography>
-                    {winners.map((winner, index) => (
+                    {winners.map((winner) => (
                         <Chip label={winner} />
                     ))}{' '}
                 </StyledWinnerList>
