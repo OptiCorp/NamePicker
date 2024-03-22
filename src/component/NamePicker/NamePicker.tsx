@@ -1,17 +1,18 @@
-import { Container } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import { Alert, Box, Card, CardContent, CardMedia, Chip, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ConfettiExplosion from 'react-confetti-explosion';
 import { useDeleteDoc } from '../../handles/useDeleteDoc';
 import { useNameData } from '../../handles/useNameData';
 import { MainButton } from '../Button';
-import { StyledLi, StyledList, StyledWinnerList } from './styles';
+import { StyledList, StyledWinnerList, Wrapper } from './styles';
 ('./nameList');
-
 export const NamePicker = () => {
     const { data } = useNameData();
     const [names, setNames] = useState<string[]>(data);
     const [winners, setWinners] = useState<string[]>([]);
     const [active, setActive] = useState(false);
+    const [alertOn, setAlertOn] = useState(false);
     const [isExploding, setIsExploding] = useState(false);
     const { removeName } = useDeleteDoc();
 
@@ -50,43 +51,72 @@ export const NamePicker = () => {
     const saveData = () => {
         winners.forEach((winner) => {
             removeName(winner);
+
+            setAlertOn(true);
         });
         setActive(false);
     };
 
     return (
         <>
-            {isExploding && <ConfettiExplosion duration={2000} width={2000} height={2000} />}
-            <Container
-                maxWidth="xs"
+            <Card
+                variant="outlined"
                 sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    padding: '10px',
+                    width: '100%',
+                    height: '550px',
+                    margin: '0 ',
                 }}
             >
-                <StyledList>
-                    {names.map((name, index) => (
-                        <li key={index}>{name}</li>
-                    ))}
-                </StyledList>
-                <StyledWinnerList>
-                    {winners.map((winner, index) => (
-                        <StyledLi key={index} color="black">
-                            {winner}
-                        </StyledLi>
-                    ))}
-                </StyledWinnerList>
+                {isExploding && <ConfettiExplosion duration={2000} width={2000} height={2000} />}
+                <CardMedia
+                    sx={{ height: 140, padding: '30px' }}
+                    image="https://i.imgur.com/HFQSsmg.gif"
+                    title="erlendrawr"
+                />
+                <CardContent>
+                    <Typography gutterBottom variant="h5">
+                        {' '}
+                        Prosjekt Kaffe v̶i̶c̶t̶i̶m̶s name list
+                    </Typography>
 
+                    <StyledList>
+                        {names.map((name, index) => (
+                            <Chip label={name} />
+                        ))}
+                    </StyledList>
+                    {alertOn && (
+                        <Alert
+                            icon={<CheckIcon fontSize="inherit" />}
+                            severity="success"
+                            onClose={() => {
+                                setAlertOn(false);
+                            }}
+                        >
+                            List has been updated! :D
+                        </Alert>
+                    )}
+                </CardContent>
+            </Card>
+            <Wrapper>
+                <StyledWinnerList>
+                    <Typography gutterBottom variant="h5">
+                        {' '}
+                        Winners!
+                    </Typography>
+                    {winners.map((winner, index) => (
+                        <Chip label={winner} />
+                    ))}{' '}
+                </StyledWinnerList>
+            </Wrapper>
+            <Box display="flex" alignItems="center" gap="30px" justifyContent="space-around" p={3}>
                 <MainButton
                     handleGetRandomName={handleGetRandomName}
                     saveData={saveData}
                     handleReset={handleReset}
                     active={active}
                     winners={winners}
-                />
-            </Container>
+                />{' '}
+            </Box>
         </>
     );
 };

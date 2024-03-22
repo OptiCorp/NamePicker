@@ -1,29 +1,43 @@
 import styled from 'styled-components';
 
 export const StyledList = styled.ul`
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+
     gap: 20px;
-    background-color: wheat;
+    height: 160px;
     max-width: 500px;
     list-style: none;
     text-decoration: none;
     padding: 2rem;
-
+    background-color: #ffffff73;
+    border-radius: 20px;
     margin: 10px 0;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: space-around;
+    align-items: center;
+`;
+export const Wrapper = styled.div`
+    min-width: 100px;
+    margin: 40px 0;
+    min-height: 50px;
+    width: 90%;
+    border-radius: 20px;
+    display: flex;
+    gap: 3rem;
+    flex-direction: column;
+    background-color: white;
 `;
 export const StyledWinnerList = styled.ul`
-    display: grid;
-    grid-template-columns: 150px 150px;
-    gap: 20px;
-    background-color: #29f8ff;
-    height: 50px;
+    display: flex;
+    gap: 50px;
+    flex-direction: row;
+    background-color: white;
 
     list-style: none;
     align-items: center;
     text-decoration: none;
-    padding: 2rem;
-    margin: 10px;
 `;
 
 export const StyledLi = styled.li`
